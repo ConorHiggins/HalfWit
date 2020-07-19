@@ -1,60 +1,78 @@
 <template>
   <v-app>
     <v-app-bar
-      app
-      color="primary"
+      color="deep-purple accent-4"
       dark
-    >
-      <div class="d-flex align-center">
-        <v-img
-          alt="Vuetify Logo"
-          class="shrink mr-2"
-          contain
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-logo-dark.png"
-          transition="scale-transition"
-          width="40"
-        />
+      app
+      clipped-left>
+      <v-toolbar-title
+        class="mr-12 ml-3">
+        Half Wit
+      </v-toolbar-title>
 
-        <v-img
-          alt="Vuetify Name"
-          class="shrink mt-1 hidden-sm-and-down"
-          contain
-          min-width="100"
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-name-dark.png"
-          width="100"
-        />
-      </div>
+      <v-spacer></v-spacer>
 
-      <!-- <v-spacer></v-spacer> -->
-
-      <v-btn
-        href="https://github.com/vuetifyjs/vuetify/releases/latest"
-        target="_blank"
-        text
-      >
-        <span class="mr-2">Latest Release</span>
-        <v-icon>mdi-open-in-new</v-icon>
-      </v-btn>
+      <v-row
+        align="center"
+        class="mr-3">
+        <v-text-field
+          clearable
+          autofocus
+          hide-details
+          placeholder="Press / to search"
+          v-model="keyword"
+          prepend-icon="mdi-magnify"
+          ref="searchInput">
+        </v-text-field>
+      </v-row>
     </v-app-bar>
 
-    <v-content>
-      <HelloWorld/>
-    </v-content>
+    <v-main>
+      <GifList/>
+    </v-main>
   </v-app>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld';
+// import vue from 'vuex'
+import GifList from './components/GifList'
 
 export default {
   name: 'App',
-
   components: {
-    HelloWorld,
+    GifList,
   },
+  data: () => {
+    return {
+      timeout: null
+    }
+  },
+  computed: {
+    keyword: {
+      get () {
+        return this.$store.state.searchTerm
+      },
+      set (value) {
+        if (this.timeout !== undefined){
+          clearTimeout(this.timeout);
+        }
 
-  data: () => ({
-    //
-  }),
+        this.timeout = setTimeout(() => {
+          this.$store.commit('updateTerm', value)
+        }, 500);
+      }
+    }
+  },
+  created: function(){
+    this.$root.$on('searchFocus', this.focusInput);
+  },
+  methods: {
+    focusInput: function(){
+      this.$refs.searchInput.focus();
+    }
+  },
+  destroyed() {
+    clearInterval(this.timeout)
+  }
 };
 </script>
