@@ -1,5 +1,5 @@
 # HalfWit (WIP)
-HalfWit is a simple Vue experiment to return GIFs related to a pasted sentence. The app queries the Giphy API which seemingly is intelligent enough to perform partial matching on the `q` parameter.
+HalfWit is a simple Vue & Electron experiment to return GIFs related to a pasted sentence. The app queries the Giphy API which seemingly is intelligent enough to perform partial matching on the `q` parameter.
 
 Clicking on a returned GIF will copy its URL to the user's clipboard so they can quickly respond to a topic of conversation with a relevant GIF
 
